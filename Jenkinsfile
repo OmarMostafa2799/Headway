@@ -45,27 +45,28 @@ pipeline {
         
         stage('apply database') {
             steps {
-             
-                 sh 'kubectl apply -f ./k8s/secret.yaml '  
-                 sh 'kubectl apply -f ./k8s/configmap.yaml '
-                 sh 'kubectl apply -f ./k8s/postgress_serves.yaml '
-                 sh 'kubectl apply -f ./k8s/postgress.yaml '  
+
+                 sh 'kubectl create -f ./k8s/ '
+                 // sh 'kubectl apply -f ./k8s/secret.yaml '  
+                 // sh 'kubectl apply -f ./k8s/configmap.yaml '
+                 // sh 'kubectl apply -f ./k8s/postgress_serves.yaml '
+                 // sh 'kubectl apply -f ./k8s/postgress.yaml '  
             }
         }
 
-        stage('apply backend') {
-            steps {
-                  sh 'kubectl apply -f ./k8s/backend.yaml '  
-                  sh 'kubectl apply -f ./k8s/backend_service.yaml '  
-            }
-        }
+        // stage('apply backend') {
+        //     steps {
+        //           sh 'kubectl apply -f ./k8s/backend.yaml '  
+        //           sh 'kubectl apply -f ./k8s/backend_service.yaml '  
+        //     }
+        // }
 
-        stage('apply frontend') {
-            steps {
-                sh 'kubectl apply -f ./k8s/frontend.yaml '  
-                sh 'kubectl apply -f ./k8s/frontend_service.yml '  
-            }
-        }
+        // stage('apply frontend') {
+        //     steps {
+        //         sh 'kubectl apply -f ./k8s/frontend.yaml '  
+        //         sh 'kubectl apply -f ./k8s/frontend_service.yml '  
+        //     }
+        // }
 
     }
 }
