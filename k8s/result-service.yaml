@@ -5,11 +5,11 @@ metadata:
     app: result
   name: result
 spec:
-  type: LoadBalancer  # Changed from NodePort to LoadBalancer
+  type: LoadBalancer  
   ports:
   - name: "result-service"
     protocol: TCP
-    port: 8081         # Exposed port for the service externally
-    targetPort: 80     # Port on the pod that the service forwards traffic to
+    port: 8081         
+    targetPort: 80    
   selector:
     app: result
