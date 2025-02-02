@@ -11,17 +11,19 @@ pipeline {
 
 
     stages {
-        stage('Terraform Init and Apply') {
-            steps {
-                script {
-                    // Initialize Terraform
-                    sh 'terraform -chdir=terraform init'
+        
+        // stage('Terraform Init and Apply') {
+        //     steps {
+        //         script {
+        //             // Initialize Terraform
+        //             sh 'terraform -chdir=terraform init'
 
-                    // Apply Terraform configurations
-                    sh 'terraform -chdir=terraform apply -auto-approve'
-                }
-            }
-        }
+        //             // Apply Terraform configurations
+        //             sh 'terraform -chdir=terraform apply -auto-approve'
+        //         }
+        //     }
+        // }
+        
          stage('Build Docker Image vote') {
              steps {
                
