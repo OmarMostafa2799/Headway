@@ -43,7 +43,7 @@ pipeline {
         }
 
         
-        stage('apply database') {
+        stage('apply manifest') {
             steps {
 
                  sh 'kubectl create -f ./k8s/ '
