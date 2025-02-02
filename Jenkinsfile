@@ -9,7 +9,19 @@ pipeline {
         AWS_REGION = 'ca-central-1'
     }
 
+
     stages {
+        stage('Terraform Init and Apply') {
+            steps {
+                script {
+                    // Initialize Terraform
+                    sh 'terraform init'
+
+                    // Apply Terraform configurations
+                    sh 'terraform apply -auto-approve'
+                }
+            }
+        }
          stage('Build Docker Image vote') {
              steps {
                
