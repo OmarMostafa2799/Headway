@@ -2,18 +2,13 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: result
-  name: result
+    app: vote
+  name: vote
 spec:
-  type: LoadBalancer
+  type: LoadBalancer  # Changed from NodePort to LoadBalancer
   ports:
-  - name: "result-service"
-    protocol: TCP
-    port: 80
-    targetPort: 80
-    # nodePort: 31001
+  - name: "vote-service"
+    port: 8080         # Exposed port for the service
+    nodePort: 31000    # NodePort is not typically needed in LoadBalancer, but it can still be included
   selector:
-    app: result
-
-
-
+    app: vote
