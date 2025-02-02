@@ -15,10 +15,10 @@ pipeline {
             steps {
                 script {
                     // Initialize Terraform
-                    sh 'terraform init'
+                    sh 'terraform -chdir=terraform init'
 
                     // Apply Terraform configurations
-                    sh 'terraform apply -auto-approve'
+                    sh 'terraform -chdir=terraform apply -auto-approve'
                 }
             }
         }
