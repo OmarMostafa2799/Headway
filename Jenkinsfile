@@ -10,25 +10,34 @@ pipeline {
     }
 
     stages {
-         stage('Build Docker Image front') {
+         stage('Build Docker Image vote') {
              steps {
                
-                 sh 'docker build -t ${ECR_REPOSITORY_URI}/headway:front-${BUILD_NUMBER} ./app/frontend/.'
+                 sh 'docker build -t ${ECR_REPOSITORY_URI}/headway:vote-${BUILD_NUMBER} ./app/vote/.'
                  sh 'aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY_URI}'
-                 sh 'docker push ${ECR_REPOSITORY_URI}/headway:front-${BUILD_NUMBER}'
+                 sh 'docker push ${ECR_REPOSITORY_URI}/headway:vote-${BUILD_NUMBER}'
              }
          }
-         stage('Build Docker Image back') {
+         stage('Build Docker Image worker') {
              steps {
-                 sh 'docker build -t ${ECR_REPOSITORY_URI}/headway:back-${BUILD_NUMBER} ./app/backend/.'
+                 sh 'docker build -t ${ECR_REPOSITORY_URI}/headway:worker-${BUILD_NUMBER} ./app/worker/.'
                  sh 'aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY_URI}'
-                 sh 'docker push ${ECR_REPOSITORY_URI}/headway:back-${BUILD_NUMBER}'
+                 sh 'docker push ${ECR_REPOSITORY_URI}/headway:worker-${BUILD_NUMBER}'
              }
          }
+         stage('Build Docker Image result') {
+             steps {
+                 sh 'docker build -t ${ECR_REPOSITORY_URI}/headway:result-${BUILD_NUMBER} ./app/result/.'
+                 sh 'aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY_URI}'
+                 sh 'docker push ${ECR_REPOSITORY_URI}/headway:result-${BUILD_NUMBER}'
+             }
+         }
+        
          stage('Kubernetes Edit Files') {
              steps {
-                    sh "sed -i 's|image:.*|image: ${ECR_REPOSITORY_URI}/headway:back-${BUILD_NUMBER}|g' ./k8s/backend.yaml"
-                    sh "sed -i 's|image:.*|image: ${ECR_REPOSITORY_URI}/headway:front-${BUILD_NUMBER}|g' ./k8s/frontend.yaml"
+                    sh "sed -i 's|image:.*|image: ${ECR_REPOSITORY_URI}/headway:vote-${BUILD_NUMBER}|g' ./k8s/vote-deployment.yaml"
+                    sh "sed -i 's|image:.*|image: ${ECR_REPOSITORY_URI}/headway:worker-${BUILD_NUMBER}|g' ./k8s/worker-deployment.yaml"
+                    sh "sed -i 's|image:.*|image: ${ECR_REPOSITORY_URI}/headway:result-${BUILD_NUMBER}|g' ./k8s/result-deployment.yaml"
                       sh "aws eks update-kubeconfig --region ca-central-1 --name master-eks "
              }
         }
